@@ -108,7 +108,9 @@ The curriculum defines a difficulty threshold $\tau(e)$ at epoch $e$. Only sampl
 
 The proportion of data used at epoch $e$ is:  
 
+$$
 $\rho(e) = \frac{|\{x_i : D(x_i) \leq \tau(e)\}|}{N}$
+$$
 
 ### 3. Integration with Neural Network Training
 The training objective becomes:  
