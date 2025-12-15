@@ -65,30 +65,49 @@ Let a dataset be $\mathcal{D} = \{x_1, x_2, ..., x_N\}$. A topic model (e.g., LD
 $P(t \mid x_i) = [p_{i1}, p_{i2}, ..., p_{iT}]$, where $\sum_{t=1}^T p_{it} = 1$.
 
 **Alternative Difficulty Metrics (Ablations):**
+
 - **Max Probability (Purity):**  
+
   $D_{\text{max}}(x_i) = 1 - \max_t P(t \mid x_i)$  
+
   (Lower max probability ⇒ higher semantic ambiguity)
-- **Topic Coherence Deviation:**  
+
+- **Topic Coherence Deviation:**
+
   For samples with ground-truth label $y_i$, compute the average topic distribution for class $k$: $\bar{P}_k$.  
+
   Difficulty is defined as:  
+
   $D_{\text{dev}}(x_i) = 1 - \cos\left(P(t \mid x_i), \bar{P}_{y_i}\right)$,  
+
   where $\cos(\cdot, \cdot)$ denotes cosine similarity.
+
 - **Composite Score:**  
+
   $D_{\text{comp}}(x_i) = \lambda H(P) + (1 - \lambda) D_{\text{max}}(x_i), \quad \lambda \in [0,1]$  
+
   where $H(P) = -\sum_{t=1}^{T} P(t \mid x_i) \log P(t \mid x_i)$ is the Shannon entropy.
 
 ### 2. Curriculum Scheduling Function
+
 The curriculum defines a difficulty threshold $\tau(e)$ at epoch $e$. Only samples with $D(x_i) \leq \tau(e)$ are used.
 
 - **Linear Schedule:**  
+
   $\tau_{\text{linear}}(e) = D_{\min} + \frac{e}{E} (D_{\max} - D_{\min})$  
+
   where $E$ is the total number of epochs, and $D_{\min}, D_{\max}$ are the min/max difficulty scores in $\mathcal{D}$.
+
 - **Root Schedule (Slow Start):**  
+
   $\tau_{\text{root}}(e) = D_{\min} + \left(\frac{e}{E}\right)^{\gamma} (D_{\max} - D_{\min}), \quad \gamma < 1$
+
 - **Exponential Schedule (Fast Start):**  
+
   $\tau_{\text{exp}}(e) = D_{\max} - (D_{\max} - D_{\min}) \cdot \beta^{e}, \quad \beta \in (0,1)$
 
 The proportion of data used at epoch $e$ is:  
+
 $\rho(e) = \frac{|\{x_i : D(x_i) \leq \tau(e)\}|}{N}$
 
 ### 3. Integration with Neural Network Training
