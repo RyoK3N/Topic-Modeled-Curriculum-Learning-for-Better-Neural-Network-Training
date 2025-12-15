@@ -54,7 +54,11 @@ Neural networks trained with a TMCL schedule will exhibit superior training char
 
 - **Generalization:** Models will achieve lower final test error and a smaller generalization gap.  
 
-  *Metric:* $\text{Generalization Gap} = \mathcal{L}_{\text{test}} - \mathcal{L}_{\text{train}}$ .  
+  *Metric:*
+
+$$
+$\text{Generalization Gap} = \mathcal{L}_{\text{test}} - \mathcal{L}_{\text{train}}$ .
+$$
 
 - **Training Stability:** Loss curves will be smoother with lower variance between training runs.  
 
