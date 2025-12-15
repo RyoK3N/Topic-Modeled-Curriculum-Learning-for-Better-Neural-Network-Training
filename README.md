@@ -93,10 +93,13 @@ $\rho(e) = \frac{|\{x_i : D(x_i) \leq \tau(e)\}|}{N}$
 
 ### 3. Integration with Neural Network Training
 The training objective becomes:  
+
 $$
 \min_{\theta} \frac{1}{|\mathcal{B}_e|} \sum_{x_i \in \mathcal{B}_e} \mathcal{L}(f_\theta(x_i), y_i)
 $$  
+
 where $\mathcal{B}_e$ is a mini-batch sampled uniformly from the eligible set:  
+
 $$
 \mathcal{S}_e = \{x_i \in \mathcal{D} : D(x_i) \leq \tau(e)\}
 $$
