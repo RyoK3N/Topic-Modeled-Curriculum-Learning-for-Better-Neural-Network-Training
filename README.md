@@ -171,23 +171,36 @@ Train the target model (e.g., ResNet-18, BERT) using standard optimization (SGD,
 | :--- | :--- | :--- | :--- | :--- |
 | **Vision** | CIFAR-10/100 | ResNet-18/34 | Classification | ResNet-18 embeddings, clustered |
 | **Vision** | MNIST/F-MNIST | Simple CNN | Classification | Raw pixels (flattened) or CNN embeddings |
-| **NLP** | AG News | BERT-base | Classification | BERT [CLS] embeddings or BoW |
-| **NLP** | IMDb | BERT-base | Sentiment Analysis | BERT [CLS] embeddings or BoW |
+| **NLP** | AG News | BERT-base | Classification | BERT `[CLS]` embeddings or BoW |
+| **NLP** | IMDb | BERT-base | Sentiment Analysis | BERT `[CLS]` embeddings or BoW |
 
 ### Evaluation Metrics
-*   **Primary:** Test Accuracy, Macro F1-Score.
-*   **Curriculum Efficacy:**
-    *   Convergence Speed: \( \text{Epochs to Acc.} = \min e \text{ s.t. } \text{Acc}(e) \geq \alpha \cdot \text{Acc}_{\text{final}} \).
-    *   Area Under the Training Curve (AUTC): Integral of accuracy vs. epoch curve (higher is better).
-    *   Training Smoothness: \( \frac{1}{E-1}\sum_{e=1}^{E-1} |\mathcal{L}_{e+1} - \mathcal{L}_e| \) (lower is better).
+
+- **Primary:** Test Accuracy, Macro F1-Score.  
+
+- **Curriculum Efficacy:**  
+
+  - **Convergence Speed:** $$ $\text{Epochs to Acc.} = \min \{ e \mid \text{Acc}(e) \geq \alpha \cdot \text{Acc}_{\text{final}} \}$  $$
+
+  - **Area Under the Training Curve (AUTC):** $$ $\int_0^E \text{Acc}(e)  de$ $$ (higher is better)  
+
+  - **Training Smoothness:** $$ $\frac{1}{E-1}\sum_{e=1}^{E-1} \left| \mathcal{L}_{e+1} - \mathcal{L}_e \right|$ (lower is better) $$
 
 ### Planned Experiments
-1.  **Difficulty Metric Validation:** Scatter plot and correlation analysis (\( r \)) between \( D(x_i) \) and the sample's loss after the first training epoch.
-2.  **Ablation on Difficulty Metric:** Compare \( D_{\text{entropy}} \), \( D_{\text{max}} \), \( D_{\text{comp}} \) within the TMCL framework.
-3.  **Curriculum Schedule Ablation:** Test linear, root (\( \gamma=0.5, 0.7 \)), and exponential (\( \beta=0.95, 0.99 \)) schedules.
-4.  **Cross-Domain Benchmark:** Run the full RS, Heuristic-CL, SPL, TMCL comparison across all dataset/model pairs.
-5.  **Sensitivity Analysis:** Investigate the impact of the number of topics \( T \) on TMCL performance.
-
+1. **Difficulty Metric Validation:**  
+   Compute Pearson correlation $r$ between $D(x_i)$ and the sample’s loss after the first training epoch.  
+2. **Ablation on Difficulty Metric:**  
+   Compare $D_{\text{entropy}}$, $D_{\text{max}}$, and $D_{\text{comp}}$ within the TMCL framework.  
+3. **Curriculum Schedule Ablation:**  
+   Evaluate linear, root ($\gamma = 0.5, 0.7$), and exponential ($\beta = 0.95, 0.99$) schedules.  
+4. **Cross-Domain Benchmark:**  
+   Compare training regimes:  
+   - **RS (Random Sampling)**  
+   - **Heuristic-CL** (e.g., sentence length, image sharpness)  
+   - **SPL (Self-Paced Learning)**  
+   - **TMCL (Proposed)**  
+5. **Sensitivity Analysis:**  
+   Study the effect of the number of topics $T$ on final performance.
 ---
 
 ## Expected Contributions & Significance
