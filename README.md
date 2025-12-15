@@ -42,7 +42,7 @@ $$
 D_{\text{entropy}}(x_i) = H(P) = -\sum_{t=1}^{T} P(t \mid x_i) \log P(t \mid x_i)
 $$  
 
-We hypothesize that $D_{\text{entropy}}$ will be positively correlated with the sample's cross-entropy loss in the early stages of model training.
+We hypothesize that $$ $D_{\text{entropy}}$ $$ will be positively correlated with the sample's cross-entropy loss in the early stages of model training.
 
 ### H2: Topic-Modeled Curriculum Improves Training Dynamics
 
@@ -50,15 +50,15 @@ Neural networks trained with a TMCL schedule will exhibit superior training char
 
 - **Convergence Speed:** Models will reach a target performance threshold in fewer epochs.  
 
-  *Metric:* Epochs to reach $\alpha\%$ of final accuracy ($\alpha \in \{90, 95\}$).  
+  *Metric:* Epochs to reach $$ $\alpha\%$ of final accuracy ($\alpha \in \{90, 95\}$) $$.  
 
 - **Generalization:** Models will achieve lower final test error and a smaller generalization gap.  
 
-  *Metric:* $\text{Generalization Gap} = \mathcal{L}_{\text{test}} - \mathcal{L}_{\text{train}}$.  
+  *Metric:* $$ $\text{Generalization Gap} = \mathcal{L}_{\text{test}} - \mathcal{L}_{\text{train}}$ $$.  
 
 - **Training Stability:** Loss curves will be smoother with lower variance between training runs.  
 
-  *Metric:* Variance of training loss across epochs $\sigma^2(\mathcal{L}_{\text{train}})$.
+  *Metric:* Variance of training loss across epochs $$ $\sigma^2(\mathcal{L}_{\text{train}})$ $$. 
 
 ### H3: Cross-Domain Robustness
 
