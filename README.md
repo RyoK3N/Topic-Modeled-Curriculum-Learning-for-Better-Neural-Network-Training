@@ -151,9 +151,9 @@ $$
    $P(t \mid x_i)$ for all samples $x_i \in \mathcal{D}$.
 
 4. **Difficulty Scoring:** Compute the difficulty $D(x_i)$ for each sample. By default, we use topic entropy:  
-   $$
-   D(x_i) = -\sum_{t=1}^{T} P(t \mid x_i) \log P(t \mid x_i)
-   $$
+$$
+D(x_i) = -\sum_{t=1}^{T} P(t \mid x_i) \log P(t \mid x_i)
+$$
 
 ### Phase 2: Curriculum Construction
 
