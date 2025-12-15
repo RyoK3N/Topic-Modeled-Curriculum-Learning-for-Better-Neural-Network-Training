@@ -151,6 +151,7 @@ $$
    $P(t \mid x_i)$ for all samples $x_i \in \mathcal{D}$.
 
 4. **Difficulty Scoring:** Compute the difficulty $D(x_i)$ for each sample. By default, we use topic entropy:  
+
 $$
 D(x_i) = -\sum_{t=1}^{T} P(t \mid x_i) \log P(t \mid x_i)
 $$
@@ -162,9 +163,10 @@ $$
 2. Define a curriculum schedule function $\tau(e)$ that controls the difficulty threshold at epoch $e$.
 
 3. For each epoch $e$, construct the eligible subset:  
-   ```math
-   \mathcal{S}_e = \{ x_i \in \mathcal{D} \mid D(x_i) \leq \tau(e) \}
-   ```
+
+$$
+\mathcal{S}_e = \{ x_i \in \mathcal{D} \mid D(x_i) \leq \tau(e) \}
+$$
 
 
 ### Phase 3: Neural Network Training
