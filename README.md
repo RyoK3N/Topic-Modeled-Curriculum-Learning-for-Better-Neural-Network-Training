@@ -35,26 +35,38 @@ The central hypothesis is that a sample's semantic "focus" or "purity," as captu
 ## Hypotheses and Theoretical Foundation
 
 ### H1: Topic Entropy Reflects Sample Difficulty
-The entropy of a sample's topic distribution is a valid proxy for its learning complexity.
-*   **Mathematical Formulation:** For a sample \( x_i \) with a topic distribution \( P(t | x_i) \) over \( T \) topics, its difficulty score is the Shannon entropy:
-    \[
-    D_{\text{entropy}}(x_i) = H(P) = -\sum_{t=1}^{T} P(t | x_i) \log P(t | x_i)
-    \]
-    We hypothesize that \( D_{\text{entropy}} \) will be positively correlated with the sample's cross-entropy loss in the early stages of model training.
+The entropy of a sample's topic distribution is a valid proxy for its learning complexity.  
+**Mathematical Formulation:** For a sample $x_i$ with a topic distribution $P(t \mid x_i)$ over $T$ topics, its difficulty score is the Shannon entropy:  
+
+$$
+D_{\text{entropy}}(x_i) = H(P) = -\sum_{t=1}^{T} P(t \mid x_i) \log P(t \mid x_i)
+$$  
+
+We hypothesize that $D_{\text{entropy}}$ will be positively correlated with the sample's cross-entropy loss in the early stages of model training.
 
 ### H2: Topic-Modeled Curriculum Improves Training Dynamics
-Neural networks trained with a TMCL schedule will exhibit superior training characteristics.
-*   **Convergence Speed:** Models will reach a target performance threshold in fewer epochs.
-    *   *Metric:* Epochs to reach \( \alpha\% \) of final accuracy (\( \alpha \in \{90, 95\} \)).
-*   **Generalization:** Models will achieve lower final test error and a smaller generalization gap.
-    *   *Metric:* \( \text{Generalization Gap} = \mathcal{L}_{\text{test}} - \mathcal{L}_{\text{train}} \).
-*   **Training Stability:** Loss curves will be smoother with lower variance between training runs.
-    *   *Metric:* Variance of training loss across epochs \( \sigma^2(\mathcal{L}_{\text{train}}) \).
+
+Neural networks trained with a TMCL schedule will exhibit superior training characteristics.  
+
+- **Convergence Speed:** Models will reach a target performance threshold in fewer epochs.  
+
+  *Metric:* Epochs to reach $\alpha\%$ of final accuracy ($\alpha \in \{90, 95\}$).  
+
+- **Generalization:** Models will achieve lower final test error and a smaller generalization gap.  
+
+  *Metric:* $\text{Generalization Gap} = \mathcal{L}_{\text{test}} - \mathcal{L}_{\text{train}}$.  
+
+- **Training Stability:** Loss curves will be smoother with lower variance between training runs.  
+
+  *Metric:* Variance of training loss across epochs $\sigma^2(\mathcal{L}_{\text{train}})$.
 
 ### H3: Cross-Domain Robustness
-The benefits of TMCL are not architecture or domain-specific and will generalize across:
-*   **Domains:** Text (AG News, IMDb) and Image (CIFAR-10/100, MNIST) datasets.
-*   **Architectures:** Convolutional Neural Networks (ResNet) and Transformer-based models (BERT).
+
+The benefits of TMCL are not architecture or domain-specific and will generalize across:  
+
+- **Domains:** Text (AG News, IMDb) and Image (CIFAR-10/100, MNIST) datasets.  
+
+- **Architectures:** Convolutional Neural Networks (ResNet) and Transformer-based models (BERT).
 
 ---
 
