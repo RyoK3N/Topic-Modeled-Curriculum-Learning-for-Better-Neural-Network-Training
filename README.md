@@ -61,51 +61,52 @@ The benefits of TMCL are not architecture or domain-specific and will generalize
 ## Extended Mathematical Framework
 
 ### 1. Topic Modeling & Difficulty Scoring
-Let a dataset be \( \mathcal{D} = \{x_1, x_2, ..., x_N\} \). A topic model (LDA, NMF, etc.) learns \( T \) topics, each represented as a distribution over features/words. For each sample \( x_i \), the model infers:
-\[
-P(t | x_i) = [p_{i1}, p_{i2}, ..., p_{iT}], \quad \text{where } \sum_{t=1}^T p_{it} = 1
-\]
+Let a dataset be $ \mathcal{D} = \{x_1, x_2, ..., x_N\} $. A topic model (LDA, NMF, etc.) learns $ T $ topics, each represented as a distribution over features/words. For each sample $ x_i $, the model infers:
+$$
+P(t \mid x_i) = [p_{i1}, p_{i2}, ..., p_{iT}], \quad \text{where } \sum_{t=1}^T p_{it} = 1
+$$
 
 **Alternative Difficulty Metrics (Ablations):**
-*   **Max Probability (Purity):** \( D_{\text{max}}(x_i) = 1 - \max_t P(t | x_i) \). Lower max probability indicates higher ambiguity.
-*   **Topic Coherence Deviation:** For samples with ground-truth labels \( y_i \), compute the average topic distribution for class \( k \), \( \bar{P}_k \). Difficulty can be the deviation from this class centroid.
-    \[
-    D_{\text{dev}}(x_i) = 1 - \text{cosine-sim}(P(t|x_i), \bar{P}_{y_i})
-    \]
+*   **Max Probability (Purity):** $ D_{\text{max}}(x_i) = 1 - \max_t P(t \mid x_i) $. Lower max probability indicates higher ambiguity.
+*   **Topic Coherence Deviation:** For samples with ground-truth labels $ y_i $, compute the average topic distribution for class $ k $, $ \bar{P}_k $. Difficulty can be the deviation from this class centroid.
+    $$
+    D_{\text{dev}}(x_i) = 1 - \cos\left(P(t \mid x_i), \bar{P}_{y_i}\right)
+    $$
+    where $ \cos(\cdot, \cdot) $ denotes cosine similarity.
 *   **Composite Score:** A weighted combination of entropy and purity.
-    \[
+    $$
     D_{\text{comp}}(x_i) = \lambda H(P) + (1-\lambda) D_{\text{max}}(x_i), \quad \lambda \in [0,1]
-    \]
+    $$
 
 ### 2. Curriculum Scheduling Function
-The curriculum defines a *difficulty threshold* \( \tau(e) \) at training epoch \( e \). Only samples with \( D(x_i) \leq \tau(e) \) are included.
+The curriculum defines a *difficulty threshold* $ \tau(e) $ at training epoch $ e $. Only samples with $ D(x_i) \leq \tau(e) $ are included.
 
 *   **Linear Schedule:**
-    \[
+    $$
     \tau_{\text{linear}}(e) = D_{\min} + \frac{e}{E} (D_{\max} - D_{\min})
-    \]
-    where \( E \) is the total number of epochs, \( D_{\min} \) and \( D_{\max} \) are the min/max difficulty scores in \( \mathcal{D} \).
+    $$
+    where $ E $ is the total number of epochs, $ D_{\min} $ and $ D_{\max} $ are the min/max difficulty scores in $ \mathcal{D} $.
 
 *   **Root Schedule (Slow Start):**
-    \[
+    $$
     \tau_{\text{root}}(e) = D_{\min} + \left(\frac{e}{E}\right)^{\gamma} (D_{\max} - D_{\min}), \quad \gamma < 1
-    \]
+    $$
     Introduces harder samples more gradually.
 
 *   **Exponential Schedule (Fast Start):**
-    \[
+    $$
     \tau_{\text{exp}}(e) = D_{\max} - (D_{\max} - D_{\min}) \cdot \beta^{e}, \quad \beta \in (0,1)
-    \]
+    $$
     Quickly introduces a broad range of samples.
 
-The proportion of dataset used at epoch \( e \) is \( \rho(e) = |\{x_i : D(x_i) \leq \tau(e)\}| / N \).
+The proportion of dataset used at epoch $ e $ is $ \rho(e) = \frac{|\{x_i : D(x_i) \leq \tau(e)\}|}{N} $.
 
 ### 3. Integration with Neural Network Training
 The standard empirical risk minimization objective is modified by the curriculum:
-\[
+$$
 \min_{\theta} \frac{1}{|\mathcal{B}_e|} \sum_{x_i \in \mathcal{B}_e} \mathcal{L}(f_\theta(x_i), y_i)
-\]
-where \( \mathcal{B}_e \) is a mini-batch sampled uniformly from the *eligible set* \( \mathcal{S}_e = \{x_i \in \mathcal{D} : D(x_i) \leq \tau(e)\} \).
+$$
+where $ \mathcal{B}_e $ is a mini-batch sampled uniformly from the *eligible set* $ \mathcal{S}_e = \{x_i \in \mathcal{D} : D(x_i) \leq \tau(e)\} $.
 
 ---
 
