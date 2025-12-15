@@ -148,11 +148,9 @@ $$
    - *Images:* Extract deep features from a pre-trained, frozen backbone (e.g., ResNet-18 penultimate layer) to create embedding vectors.
 
 2. **Model Fitting:** Apply topic modeling (e.g., LDA or NMF) to the feature matrix to obtain the topic distribution
-
    $P(t \mid x_i)$ for all samples $x_i \in \mathcal{D}$.
 
 4. **Difficulty Scoring:** Compute the difficulty $D(x_i)$ for each sample. By default, we use topic entropy:  
-
    $$ 
    D(x_i) = -\sum_{t=1}^{T} P(t \mid x_i) \log P(t \mid x_i)
    $$
@@ -164,7 +162,6 @@ $$
 2. Define a curriculum schedule function $\tau(e)$ that controls the difficulty threshold at epoch $e$.
 
 3. For each epoch $e$, construct the eligible subset:  
-
    $$
    \mathcal{S}_e = \{ x_i \in \mathcal{D} \mid D(x_i) \leq \tau(e) \}
    $$
