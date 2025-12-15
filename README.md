@@ -60,39 +60,40 @@ TMCL benefits generalize across:
 
 ### Topic distribution
 
-For a sample \( x_i \), a topic model produces a topic distribution:
+For a sample $x_i$, a topic model produces a topic distribution:
 
-\[
+$$
 P(t \mid x_i), \quad t \in \{1, \dots, T\}
-\]
+$$
 
----
+where $T$ is the total number of topics.
 
-### Difficulty score (Topic Entropy)
+### Difficulty score (Topic entropy)
 
-\[
-D(x_i) = -\sum_{t=1}^{T} P(t \mid x_i)\log P(t \mid x_i)
-\]
+The difficulty of a sample is measured by the entropy of its topic distribution:
 
-- Low entropy → Easy sample  
-- High entropy → Hard sample  
+$$
+D(x_i) = -\sum_{t=1}^{T} P(t \mid x_i) \log P(t \mid x_i)
+$$
 
----
+- **Low entropy** → Easy sample (topic distribution is concentrated)
+- **High entropy** → Hard sample (topic distribution is dispersed)
 
 ### Curriculum scheduling function
 
-\[
+The curriculum function determines the difficulty threshold at each training epoch:
+
+$$
 C(t) = D_{\min} + \frac{t}{T_{\max}}(D_{\max} - D_{\min})
-\]
+$$
 
 Where:
-- \( t \): current training epoch  
-- \( T_{\max} \): total epochs  
-- \( D_{\min}, D_{\max} \): difficulty bounds  
+- $t$: current training epoch
+- $T_{\max}$: total number of training epochs
+- $D_{\min}$: minimum difficulty bound
+- $D_{\max}$: maximum difficulty bound
 
-Only samples with \( D(x_i) \le C(t) \) are eligible for training at epoch \( t \).
-
----
+Only samples with $D(x_i) \le C(t)$ are eligible for training at epoch $t$.
 
 ## Methodology
 
@@ -221,5 +222,7 @@ Samples are sorted by difficulty score and introduced progressively using the cu
 ## Author
 
 **Reiyo**  
+
 Research Topic: Topic-Modeled Curriculum Learning for better and efficient Neural Network Training
+
 Field: Deep Learning / Representation Learning / Optimization
