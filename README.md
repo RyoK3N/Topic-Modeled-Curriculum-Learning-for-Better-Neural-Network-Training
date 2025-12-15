@@ -142,34 +142,51 @@ $$
 ## Methodology
 
 ### Phase 1: Topic Modeling & Difficulty Annotation
+
 1. **Feature Extraction:**
    - *Text:* Bag-of-words or TF-IDF vectors.
    - *Images:* Extract deep features from a pre-trained, frozen backbone (e.g., ResNet-18 penultimate layer) to create embedding vectors.
-2. **Model Fitting:** Apply topic modeling (e.g., LDA or NMF) to the feature matrix to obtain the topic distribution $P(t \mid x_i)$ for all samples $x_i \in \mathcal{D}$.
-3. **Difficulty Scoring:** Compute the difficulty $D(x_i)$ for each sample. By default, we use topic entropy:  
+
+2. **Model Fitting:** Apply topic modeling (e.g., LDA or NMF) to the feature matrix to obtain the topic distribution
+
+   $P(t \mid x_i)$ for all samples $x_i \in \mathcal{D}$.
+
+4. **Difficulty Scoring:** Compute the difficulty $D(x_i)$ for each sample. By default, we use topic entropy:  
+
    $$ 
    D(x_i) = -\sum_{t=1}^{T} P(t \mid x_i) \log P(t \mid x_i)
    $$
 
 ### Phase 2: Curriculum Construction
+
 1. Sort the entire dataset $\mathcal{D}$ by $D(x_i)$ in **ascending order** (easiest to hardest).
+
 2. Define a curriculum schedule function $\tau(e)$ that controls the difficulty threshold at epoch $e$.
+
 3. For each epoch $e$, construct the eligible subset:  
+
    $$
    \mathcal{S}_e = \{ x_i \in \mathcal{D} \mid D(x_i) \leq \tau(e) \}
    $$
 
+
 ### Phase 3: Neural Network Training
 Train the target model (e.g., ResNet-18, BERT) using standard optimization (e.g., Adam), but sample mini-batches from $\mathcal{S}_e$ instead of the full dataset $\mathcal{D}$. The empirical risk minimization objective at epoch $e$ becomes:  
+
 $$
 \min_{\theta} \frac{1}{|\mathcal{B}_e|} \sum_{x_i \in \mathcal{B}_e} \mathcal{L}(f_\theta(x_i), y_i)
 $$  
+
 where $\mathcal{B}_e \sim \text{Uniform}(\mathcal{S}_e)$.
 
 **Comparison Regimes:**
+
 - **RS (Random Sampling):** Standard uniform shuffling over $\mathcal{D}$.
+
 - **Heuristic-CL:** Curriculum based on task-specific heuristics (e.g., sentence length for NLP, image sharpness for Vision).
+
 - **SPL (Self-Paced Learning):** Samples are weighted or selected based on current loss $\mathcal{L}(f_\theta(x_i), y_i)$.
+
 - **TMCL (Proposed):** Curriculum based on unsupervised topic-modeled difficulty $D(x_i)$.
 
 ---
